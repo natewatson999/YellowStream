@@ -1,0 +1,24 @@
+{
+  "name": "YellowStream",
+  "version": "0.0.2",
+  "description": "Provides stream utilties, such as multi-plexing and generalized receivers.",
+  "main": "code.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "stream"
+  ],
+  "author": "Nate Watson",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/natewatson999/YellowStream.git"
+  },
+  "bugs": {
+    "url": "https://github.com/natewatson999/YellowStream/issues"
+  },
+  "homepage": "https://github.com/natewatson999/YellowStream"
+}
