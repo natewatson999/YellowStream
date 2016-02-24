@@ -23,9 +23,10 @@ var consolidator = function(basis){
 	return;
 };
 var ToFrameStream = function(basis){
-	var buffer = "";
+	this.buffer = "";
 	this.frameSize = 64;
 	this.emitter = new events.EventEmitter();
+	var self = this;
 	this.on = function(condition, callback) {
 		switch(condition) {
 			case "data":
@@ -42,17 +43,17 @@ var ToFrameStream = function(basis){
 		}
 	};
 	basis.on("data", function(data){
-		buffer = buffer + data;
-		while (buffer.length >= this.frameSize) {
-			this.emitter.emit("data", buffer.substring(0, (this.frameSize-1)));
-			buffer = buffer.substring((this.frameSize-1), buffer.length);
+		self.buffer = self.buffer + data;
+		while (self.buffer.length >= self.frameSize) {
+			self.emitter.emit("data", self.buffer.substring(0, (self.frameSize-1)));
+			self.buffer = self.buffer.substring((self.frameSize-1), self.buffer.length);
 		}
 	});
 	basis.on("error", function(error){
-		this.emitter.emit("error", error);
+		self.emitter.emit("error", error);
 	});
 	basis.on("end", function(){
-		this.emitter.emit("end", buffer);
+		self.emitter.emit("end", self.buffer);
 	});
 	return;
 };
