@@ -30,13 +30,13 @@ var ToFrameStream = function(basis){
 	this.on = function(condition, callback) {
 		switch(condition) {
 			case "data":
-				this.emitter.on("data", callback);
+				self.emitter.on("data", callback);
 				break;
 			case "error":
-				this.emitter.on("error", callback);
+				self.emitter.on("error", callback);
 				break;
 			case "end":
-				this.emitter.on("end", callback);
+				self.emitter.on("end", callback);
 				break;
 			default:
 				break;

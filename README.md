@@ -30,6 +30,8 @@ Consolidator is basically a utility function, that takes a stream, takes all of 
 
 Consolidators take a streaming object, and output a similar object. Consolidators have two events: "error" and "end". Error will usually have an error object as a callback parameter. "end" will always have a callback parameter, which is the value of the string in the buffer. 
 
+The received streaming object must be capable of emitting "error", "data", and "end"; in the ususual ways. 
+
 #### consolidator example
     var https = require("https");
     var yellow = require("yellow-stream");
@@ -42,3 +44,29 @@ Consolidators take a streaming object, and output a similar object. Consolidator
         console.log(value);
       });
     });
+
+### FrameStreams
+
+FrameStreams are intended for services like VOIP sercies, which have a continuous stream, and need the data segmented. The problem is that, usually, TCP sends packets of a certain regular size, which may or may not be the size of the data frames the developer needs. This takes an arbitrary stream, and converts its data emission into a format some human might want.
+
+FrameStreams take a streaming object, and output a streaming object. FrameStrems have 3 events: "error", "data", and "end". "error" is for errors in the usual way. "data" is a dataframe of a garunteed size. "end" is emitted when the source stream closes. "end"'s callback function has a parameter that is the data left over in the buffer. 
+
+The received streaming object must be capable of emitting "error", "data", and "end"; in the ususual ways. 
+
+#### FrameStream Example
+var https = require("https");
+var yellow = require("yellow-stream");
+https.get("https://www.google.com", function(raw){
+	var stream = new yellow.toFrameStream(raw);
+	stream.frameSize = 32;
+	stream.on("error", function(e){
+		console.log(e);
+	});
+	stream.on("data", function(value){
+		console.log(value);
+	});
+	stream.on("end", function(value){
+		console.log(value);
+	});
+});
+
