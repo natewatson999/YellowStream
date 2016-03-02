@@ -1,4 +1,39 @@
 var events = require("events");
+var splitStream =  function(basis, splitPhrase){
+	this.buffer = "";
+	this.emitter = new events.EventEmitter();
+	this.splitPhrase = splitPhrase;
+	var self = this;
+	this.on = function(condition, callback) {
+		switch(condition) {
+			case "data":
+				self.emitter.on("data", callback);
+				break;
+			case "error":
+				self.emitter.on("error", callback);
+				break;
+			case "end":
+				self.emitter.on("end", callback);
+				break;
+			default:
+				break;
+		}
+	};
+	basis.on("data", function(data){
+		self.buffer = self.buffer + data;
+		while (self.buffer.indexOf(self.splitPhrase) > -1) {
+			self.emitter.emit("data", self.buffer.substring(0, (self.buffer.indexOf(self.splitPhrase))));
+			self.buffer = self.buffer.substring((self.buffer.indexOf(self.splitPhrase) + self.splitPhrase.length), self.buffer.length);
+		}
+	});
+	basis.on("error", function(error){
+		self.emitter.emit("error", error);
+	});
+	basis.on("end", function(){
+		self.emitter.emit("end", self.buffer);
+	});
+	return;
+};
 var consolidator = function(basis){
 	var buffer = "";
 	basis.on("data", function(data){
@@ -58,6 +93,7 @@ var ToFrameStream = function(basis){
 	return;
 };
 var features = {};
+features.splitStream = splitStream;
 features.toFrameStream = ToFrameStream;
 features.consolidator = consolidator;
 module.exports = exports = features;

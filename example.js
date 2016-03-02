@@ -22,3 +22,17 @@ https.get("https://www.google.com", function(raw){
 		console.log(value);
 	});
 });
+var http = require("http");
+http.get("http://www.uglydress.com/", function(raw){
+	var stream = new yellow.splitStream(raw, "\n");
+	stream.on("error", function(e){
+		console.log(e);
+	});
+	stream.on("data", function(value){
+		console.log(value);
+		console.log("\n");
+	});
+	stream.on("end", function(value){
+		console.log(value);
+	});
+});
