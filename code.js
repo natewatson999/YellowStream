@@ -1,4 +1,61 @@
 var events = require("events");
+var breakByLine = function(basis, posix, macOS, windows, reverseWindows){
+	if (posix==null) {
+		return breakByLine(basis, true);
+	}
+	if (macOS==null) {
+		return breakByLine(basis, posix, true);
+	}
+	if (windows==null) {
+		return breakByLine(basis, posix, macOS, true);
+	}
+	if (reverseWindows==null) {
+		return breakByLine(basis, posix, macOS, windows, true);
+	}
+	this.buffer = "";
+	this.emitter = new events.EventEmitter();
+	this.splitPhrase = splitPhrase;
+	var phraseIns = "";
+	if (posix==true) {
+		phraseIns = phraseIns + "|\n";
+	}
+	if (macOS==true) {
+		phraseIns = phraseIns + "|\r";
+	}
+	if (windows==true) {
+		phraseIns = phraseIns + "|\r\n";
+	}
+	if (windows==true) {
+		phraseIns = phraseIns + "|\n\r";
+	}
+	if(phraseIns.length > 0) {
+		phraseIns = phraseIns.substring(1, phraseIns.length);
+	}
+	var reg = new RegExp(phraseIns);
+	var self = this;
+	this.on = function(condition, callback) {
+		if ((!condition)||(!callback)) {
+			self.emitter.emit("error", {});
+			return;
+		}
+		self.emitter.on(condition, callback);
+	};
+	basis.on("data", function(data){
+		self.buffer = self.buffer + data;
+		var segments = self.buffer.split(reg);
+		self.buffer = segments[segments.length-1];
+		for (var index=0; index < segments.length-1; index++) {
+			self.emitter.emit("data", segments[index]);
+		}
+	});
+	basis.on("error", function(error){
+		self.emitter.emit("error", error);
+	});
+	basis.on("end", function(){
+		self.emitter.emit("end", self.buffer);
+	});
+	return;
+};
 var splitStream =  function(basis, splitPhrase){
 	this.buffer = "";
 	this.emitter = new events.EventEmitter();
@@ -93,6 +150,7 @@ var ToFrameStream = function(basis){
 	return;
 };
 var features = {};
+features.breakByLine = breakByLine;
 features.splitStream = splitStream;
 features.toFrameStream = ToFrameStream;
 features.consolidator = consolidator;
