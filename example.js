@@ -36,3 +36,16 @@ http.get("http://www.uglydress.com/", function(raw){
 		console.log(value);
 	});
 });
+http.get("http://www.uglydress.com/", function(raw){
+	var stream = new yellow.breakByLine(raw);
+	stream.on("error", function(e){
+		console.log(e);
+	});
+	stream.on("data", function(value){
+		console.log(value);
+		console.log("\n");
+	});
+	stream.on("end", function(value){
+		console.log(value);
+	});
+});

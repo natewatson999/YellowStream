@@ -1,20 +1,19 @@
 var events = require("events");
 var breakByLine = function(basis, posix, macOS, windows, reverseWindows){
 	if (posix==null) {
-		return breakByLine(basis, true);
+		posix = true;
 	}
 	if (macOS==null) {
-		return breakByLine(basis, posix, true);
+		macOS = true;
 	}
 	if (windows==null) {
-		return breakByLine(basis, posix, macOS, true);
+		windows = true;
 	}
 	if (reverseWindows==null) {
-		return breakByLine(basis, posix, macOS, windows, true);
+		reverseWindows = true;
 	}
 	this.buffer = "";
 	this.emitter = new events.EventEmitter();
-	this.splitPhrase = splitPhrase;
 	var phraseIns = "";
 	if (posix==true) {
 		phraseIns = phraseIns + "|\n";
