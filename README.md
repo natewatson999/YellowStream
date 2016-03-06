@@ -47,9 +47,9 @@ The received streaming object must be capable of emitting "error", "data", and "
 
 ### FrameStreams
 
-FrameStreams are intended for services like VOIP sercies, which have a continuous stream, and need the data segmented. The problem is that, usually, TCP sends packets of a certain regular size, which may or may not be the size of the data frames the developer needs. This takes an arbitrary stream, and converts its data emission into a format some human might want.
+FrameStreams are intended for services like VOIP services, which have a continuous stream, and need the data segmented. The problem is that, usually, TCP sends packets of a certain regular size, which may or may not be the size of the data frames the developer needs. This takes an arbitrary stream, and converts its data emission into a format some human might want.
 
-FrameStreams take a streaming object, and output a streaming object. FrameStrems have 3 events: "error", "data", and "end". "error" is for errors in the usual way. "data" is a dataframe of a garunteed size. "end" is emitted when the source stream closes. "end"'s callback function has a parameter that is the data left over in the buffer. 
+FrameStreams take a streaming object, and output a streaming object. FrameStreams have 3 events: "error", "data", and "end". "error" is for errors in the usual way. "data" is a dataframe of a garunteed size. "end" is emitted when the source stream closes. "end"'s callback function has a parameter that is the data left over in the buffer. 
 
 The received streaming object must be capable of emitting "error", "data", and "end"; in the ususual ways. 
 
@@ -70,3 +70,27 @@ https.get("https://www.google.com", function(raw){
 	});
 });
 
+### NewLineStreams
+
+NewLineStreams are intended for services such as IM systems, consoles, and certain database systems where one may need to break a stream up by lines. 
+
+NewLineStreams take a streaming object, and output a streaming object. NewLineStreams have 3 events: "error", "data", and "end". "error" is for errors in the usual way. "data" is a dataframe. "end" is emitted when the source stream closes. "end"'s callback function has a parameter that is the data left over in the buffer. 
+
+The received streaming object must be capable of emitting "error", "data", and "end"; in the ususual ways. 
+
+#### NewLineStream Example
+var https = require("https");
+var yellow = require("yellow-stream");
+http.get("http://www.uglydress.com/", function(raw){
+	var stream = new yellow.breakByLine(raw, true, true, true, true);
+	stream.on("error", function(e){
+		console.log(e);
+	});
+	stream.on("data", function(value){
+		console.log(value);
+		console.log("\n");
+	});
+	stream.on("end", function(value){
+		console.log(value);
+	});
+});
