@@ -94,3 +94,27 @@ The received streaming object must be capable of emitting "error", "data", and "
             console.log(value);
         });
     });
+
+### SplitStreams
+
+SplitStreams are for when one wants to break up a stream by certain phrases. This is useful in things like database clients.
+
+SplitStreams take a streaming object, and output a streaming object. SplitStreams have 3 events: "error", "data", and "end". "error" is for errors in the usual way. "data" is a dataframe. "end" is emitted when the source stream closes. "end"'s callback function has a parameter that is the data left over in the buffer. 
+
+The received streaming object must be capable of emitting "error", "data", and "end"; in the ususual ways. 
+
+#### SplitStream Example
+    var http = require("http");
+    http.get("http://www.uglydress.com/", function(raw){
+        var stream = new yellow.splitStream(raw, "\n");
+        stream.on("error", function(e){
+            console.log(e);
+        });
+        stream.on("data", function(value){
+            console.log(value);
+            console.log("\n");
+        });
+        stream.on("end", function(value){
+            console.log(value);
+        });
+    });
