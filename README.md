@@ -54,21 +54,21 @@ FrameStreams take a streaming object, and output a streaming object. FrameStream
 The received streaming object must be capable of emitting "error", "data", and "end"; in the ususual ways. 
 
 #### FrameStream Example
-var https = require("https");
-var yellow = require("yellow-stream");
-https.get("https://www.google.com", function(raw){
-	var stream = new yellow.toFrameStream(raw);
-	stream.frameSize = 32;
-	stream.on("error", function(e){
-		console.log(e);
-	});
-	stream.on("data", function(value){
-		console.log(value);
-	});
-	stream.on("end", function(value){
-		console.log(value);
-	});
-});
+    var https = require("https");
+    var yellow = require("yellow-stream");
+    https.get("https://www.google.com", function(raw){
+        var stream = new yellow.toFrameStream(raw);
+        stream.frameSize = 32;
+        stream.on("error", function(e){
+            console.log(e);
+        });
+        stream.on("data", function(value){
+            console.log(value);
+        });
+        stream.on("end", function(value){
+            console.log(value);
+        });
+    });
 
 ### NewLineStreams
 
@@ -79,18 +79,18 @@ NewLineStreams take a streaming object, and output a streaming object. NewLineSt
 The received streaming object must be capable of emitting "error", "data", and "end"; in the ususual ways. 
 
 #### NewLineStream Example
-var https = require("https");
-var yellow = require("yellow-stream");
-http.get("http://www.uglydress.com/", function(raw){
-	var stream = new yellow.breakByLine(raw, true, true, true, true);
-	stream.on("error", function(e){
-		console.log(e);
-	});
-	stream.on("data", function(value){
-		console.log(value);
-		console.log("\n");
-	});
-	stream.on("end", function(value){
-		console.log(value);
-	});
-});
+    var https = require("https");
+    var yellow = require("yellow-stream");
+    http.get("http://www.uglydress.com/", function(raw){
+        var stream = new yellow.breakByLine(raw, true, true, true, true);
+        stream.on("error", function(e){
+            console.log(e);
+        });
+        stream.on("data", function(value){
+            console.log(value);
+            console.log("\n");
+        });
+        stream.on("end", function(value){
+            console.log(value);
+        });
+    });
