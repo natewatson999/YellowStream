@@ -1,6 +1,6 @@
 {
   "name": "yellow-stream",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Provides stream utilties, such as multi-plexing and generalized receivers.",
   "main": "code.js",
   "dependencies": {},

@@ -11,7 +11,7 @@ This module is published under the MIT license.
 In the directory in question, run this command:
 
 ```
-npm install udp-hub
+npm install yellow-stream
 ```
 
 ### Global
@@ -19,7 +19,7 @@ npm install udp-hub
 Assuming you have the rights to do so, run this command:
 
 ```
-npm install -g udp-hub
+npm install -g yellow-stream
 ```
 
 ## Usage instructions
