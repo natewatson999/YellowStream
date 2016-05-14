@@ -1,6 +1,6 @@
 {
   "name": "yellow-stream",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Provides stream utilties, such as multi-plexing and generalized receivers.",
   "main": "code.js",
   "dependencies": {},
@@ -19,6 +19,9 @@
   },
   "bugs": {
     "url": "https://github.com/natewatson999/YellowStream/issues"
+  },
+  "dependencies": {
+	"speedconcat": "^1.0.2"
   },
   "homepage": "https://github.com/natewatson999/YellowStream"
 }
